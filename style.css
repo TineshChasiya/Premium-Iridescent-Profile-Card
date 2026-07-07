@@ -1,0 +1,215 @@
+/* ==========================================
+1. GLOBAL SETTINGS & DESIGN SYSTEM
+========================================== */
+:root {
+    /* Deep space background to make glass pop */
+    --bg-gradient: radial-gradient(circle at 50% 50%, #0f0c1b 0%, #05020a 100%);
+    --text-main: #ffffff;
+    --text-sub: rgba(255, 255, 255, 0.6);
+    --text-muted: rgba(255, 255, 255, 0.46);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    /* Centers the card perfectly on screen */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+/* ==========================================
+2. AMBIENT LIGHTING (MOVING BACKDROP ORBS)
+========================================== */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    /* Turns solid circles into soft glowing light */
+    filter: blur(90px);
+    z-index: 1;
+    opacity: 0.6;
+}
+
+/* Pink Light Source */
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: #ff007f;
+    top: 15%;
+    left: 20%;
+    animation: float-slow 12s infinite ease-in-out;
+}
+
+/* Cyan Light Source */
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: #00f2fe;
+    bottom: 15%;
+    right: 20%;
+    animation: float-slow 16s infinite ease-in-out reverse;
+}
+
+/* Infinite floating fluid movement */
+@keyframes float-slow {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+    }
+
+    50% {
+        transform: translate(40px, -60px) scale(1.15);
+    }
+
+    100% {
+        transform: translate(0px, 0px) scale(1);
+    }
+}
+
+/* ==========================================
+3. HIGH-PRECISION GLASSMORPHIC CONTAINER
+========================================== */
+.profile-card {
+    z-index: 2;
+    width: 380px;
+    padding: 2.5rem;
+    border-radius: 24px;
+    /* Pure Grid layout for vertical spacing */
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+    /* High-Precision Glass Blur & Saturation */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(25px) saturate(190%);
+    -webkit-backdrop-filter: blur(25px) saturate(190%);
+    /* Light-catching realistic borders */
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    /* Inset shadow creates 3D glass edge reflection */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0px rgba(255, 255, 255, 0.25);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.6s ease;
+}
+
+/* ==========================================
+4. IRIDESCENT COLOR-SHIFT LAYER
+========================================== */
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Rainbow oil-slick gradient colors */
+    background: linear-gradient(135deg,
+            rgba(255, 0, 128, 0.08) 0%,
+            rgba(0, 242, 254, 0.08) 35%,
+            rgba(255, 255, 255, 0) 65%,
+            rgba(255, 215, 0, 0.06) 100%);
+    z-index: -1;
+    /* Blends rainbow colors with the glass texture */
+    mix-blend-mode: overlay;
+    transition: background 0.6s ease;
+}
+
+/* Hover Micro-Interactions */
+.profile-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Changes light refraction angle on hover */
+.profile-card:hover::before {
+    background: linear-gradient(215deg,
+            rgba(255, 0, 128, 0.14) 0%,
+            rgba(0, 242, 254, 0.14) 25%,
+            rgba(255, 255, 255, 0.02) 60%,
+            rgba(255, 215, 0, 0.12) 100%);
+}
+
+/* ==========================================
+5. INNER CONTENT LAYOUT
+========================================== */
+.profile-avatar img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    object-fit: cover;
+}
+
+/* Grid for text layout spacing */
+.profile-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+.badge {
+    /* Prevents badge from stretching full width */
+    justify-self: start;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #00f2fe;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+.profile-info h1 {
+    font-size: 1.6rem;
+    color: var(--text-main);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.profile-info p {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Splits stats into 2-columns cleanly */
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.stat-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+}
+.stat-item strong{
+    font-size: 1.2rem;
+    color: var(--text-main);
+    font-weight: 600;
+    }
+    .stat-item span{
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
